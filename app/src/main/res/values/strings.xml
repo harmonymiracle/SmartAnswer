@@ -1,0 +1,11 @@
+<resources>
+
+    <string name="app_name">智能问答</string>
+    <string name="test">在下找到怎么设置了!</string>
+    <string name="start">start game</string>
+    <string name="searchBtnName">搜索</string>
+    <string name="searchPlaceHolder">请输入待查询的问题</string>
+    <string name="account" >账户</string>
+    <string name="search">查询</string>
+    <string name="ask">提问</string>
+</resources>
