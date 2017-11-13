@@ -28,9 +28,7 @@ import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.FormBody;
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -58,15 +56,14 @@ public class MainActivity extends AppCompatActivity {
     public EditText questionTitle;
     public EditText matchQustionList;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*
-        questionTitle = (EditText)findViewById(R.id.question);
-        matchQustionList = (EditText)findViewById(R.id.matchQuestion);
 
+        questionTitle = (EditText)findViewById(R.id.question);
 
         searchBtn = (Button)findViewById(R.id.searchBtn);
         searchBtn.setOnClickListener(
@@ -74,18 +71,20 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         final String quesStr = questionTitle.getText().toString();
-                        matchQustionList.setText(quesStr);
+                        SendQuestion Q = new SendQuestion();
+                        Q.setQuestion(quesStr);
+                        Q.setTypeId("0");
+
+                        sendQuestion(serverUrl, Q);
+                        questionTitle.setText( String.valueOf(questionArrayList.size()) );
 
                     }
                 }
         );
-
-        */
-
     }
 
 
-
+    /*
     private View.OnClickListener onClickListener=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -98,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+    */
 
     private void sendQuestion(String url,SendQuestion Question){
         //向服务器发送用户问题
@@ -151,17 +151,17 @@ public class MainActivity extends AppCompatActivity {
             JsonObject jsonObject = new JsonParser().parse(jsonData).getAsJsonObject();
             JsonArray jsonArray=jsonObject.getAsJsonArray("information");
 
-            //String m=new String();
+            String m=new String();
             for(JsonElement question :jsonArray)
             {
                 Question question1=gson.fromJson(question,new TypeToken<Question>() {}.getType());
                 questionArrayList.add(question1);
-                //m=m+question1.toString();
+                m=m+question1.toString();
             }
 
-            //            Message message=handler.obtainMessage();
-            //            message.obj=m;
-            //            message.sendToTarget();
+                        Message message=handler.obtainMessage();
+                        message.obj=jsonData;
+                        message.sendToTarget();
         }
     };
 

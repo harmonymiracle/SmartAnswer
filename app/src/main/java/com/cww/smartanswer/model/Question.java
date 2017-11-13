@@ -11,6 +11,23 @@ public class Question {
     String userId;
     String answerIds;
 
+    public Question() {
+        question = "who are you";
+        userId = "0";
+    }
+    public Question(String qus, String uid) {
+        question = qus;
+        userId = uid;
+    }
+
+    public Question (String qusId, String qus, String dat, String uid, String ansIds) {
+        questionId = qusId;
+        question = qus;
+        date = dat;
+        userId = uid;
+        answerIds = ansIds;
+    }
+
     public void setQuestionId(String questionId) {
         this.questionId = questionId;
     }
