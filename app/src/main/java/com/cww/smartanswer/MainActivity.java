@@ -37,7 +37,7 @@ import okhttp3.Response;
 public class MainActivity extends AppCompatActivity {
 
     private OkHttpClient client = new OkHttpClient();
-    private String serverUrl = "http://192.168.1.176:9000/";
+    private String serverUrl = "http://39.106.114.141";
     private TextView rs;
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -78,11 +78,19 @@ public class MainActivity extends AppCompatActivity {
                         sendQuestion(serverUrl, Q);
                         questionTitle.setText( String.valueOf(questionArrayList.size()) );
 
+
+
                     }
                 }
         );
     }
 
+    private View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick (View view) {
+
+        }
+    };
 
     /*
     private View.OnClickListener onClickListener=new View.OnClickListener() {

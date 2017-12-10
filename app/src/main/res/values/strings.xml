@@ -1,24 +1,24 @@
 <resources>
-
-    <string name="app_name">智能问答</string>
-    <string name="test">在下找到怎么设置了!</string>
-    <string name="start">start game</string>
-    <string name="searchBtnText">搜索</string>
-    <string name="searchPlaceHolder">请输入待查询的问题</string>
-    <string name="account" >账户</string>
-    <string name="search">查询</string>
-    <string name="ask">提问</string>
+    <string name="app_name">智能问答demo1</string>
 
 
+    <string name="no_log_in">尚未注册</string>
+    <string name="my_follow_question">我关注的问题</string>
+    <string name="my_follow_answer">我关注的答案</string>
 
-    <string name="testMultiQuestion">什么是ScrollView？它就是一个用于为普通组件添加滚动条的组件,一种可供用户滚动的层次结构布局容器
-        ，允许显示比实际多的内容。该组件里面最多只能包含一个组件，该组件在默认的情况下，
-        只为其他组件添加垂直滚动条，如果要应用需要添加水平滚动条，则可以借助于另一个滚动视图
-        -HorizontalScrollView来实现。 布局
-    什么是ScrollView？它就是一个用于为普通组件添加滚动条的组件,一种可供用户滚动的层次结构布局容器
-        ，允许显示比实际多的内容。该组件里面最多只能包含一个组件，该组件在默认的情况下，
-        只为其他组件添加垂直滚动条，如果要应用需要添加水平滚动条，则可以借助于另一个滚动视图
-        -HorizontalScrollView来实现。 布局</string>
-    
-    <string name="prior">为了优先显示</string>
+    <string name="user_account_input">账号：</string>
+    <string name="user_pwd_input">密码：</string>
+    <string name="check_btn">验证</string>
+    <string name="user_sign_up_btn">登录</string>
+    <string name="user_sign_in_btn">注册</string>
+
+    <string name="sign_up_title">注册页面</string>
+
+    <string name="idea_title">问一下</string>
+    <string name="write_idea_title">写下想法</string>
+
+    <string name="title_activity_account">AccountActivity</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="title_activity_idea">IdeaActivity</string>
+    <string name="title_activity_write_idea">WriteIdeaActivity</string>
 </resources>
