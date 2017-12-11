@@ -21,6 +21,7 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.wisdom.cww.domain.Result;
 import com.wisdom.cww.domain.SignUp;
+import com.wisdom.cww.domain.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class SignUpActivity extends AppCompatActivity {
 
 
     public ArrayList<Result>  resultsArrayList = new ArrayList<Result>();
-
+    public ArrayList<User> userArrayList = new ArrayList<User>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,6 @@ public class SignUpActivity extends AppCompatActivity {
                             signup.sendusername(serverUrl,boolback);
                             //user.setNickname (temp);
                         }
-
                     }
                 }
         );
@@ -90,8 +90,6 @@ public class SignUpActivity extends AppCompatActivity {
                             signup.setPassword(tempPwd);
                             signup.Login(serverUrl,boolSigninBack);
                         }
-
-
                     }
                 }
         );
@@ -110,9 +108,8 @@ public class SignUpActivity extends AppCompatActivity {
                         if (!tempUser.equals("") && !tempPwd.equals("")){
                             signup.setUsername(tempUser);
                             signup.setPassword(tempPwd);
-                            signup.signup(serverUrl,boolSignupBack);
+                            signup.signup(serverUrl,userback);
                         }
-
 
                         /*User user = new User();
                         //AccountInfo acInfo = new AccountInfo();
@@ -142,6 +139,10 @@ public class SignUpActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
+                case 2:
+                    userInfoReact(msg);
+
+                    break;
                 case 3:
                     userInputReact(msg);
                     break;
@@ -245,6 +246,57 @@ public class SignUpActivity extends AppCompatActivity {
         }
     };
 
+    private Callback userback= new Callback() {
+        @Override
+        public void onFailure(Call call, IOException e) {
+            Log.i("MainActivity","onFailure");
+            resultsArrayList.clear();
+            e.printStackTrace();
+        }
+
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+            String jsonData = response.body().string();
+            JsonObject jsonObject = new JsonParser().parse(jsonData).getAsJsonObject();
+            JsonArray jsonArray=jsonObject.getAsJsonArray("information");
+            Gson gson=new Gson();
+            for(JsonElement user :jsonArray)
+            {
+                User user1=gson.fromJson(user,new TypeToken<User>() {}.getType());
+                userArrayList.add(user1);
+            }
+            Message message=handler.obtainMessage();
+            message.obj=userArrayList;
+            message.what=2;
+            message.sendToTarget();
+
+        }
+    };
+
+
+    private void userInfoReact(Message msg){
+        ArrayList<User> res = (ArrayList<User>)msg.obj;
+        //ArrayList<Result> res = (ArrayList<Result>)msg.obj;
+        if(res.get(0).getResult().equals("failure")) { //.getResult().equals("failure")) {
+            accountInput.setTextColor(Color.rgb(255, 0, 255));
+            accountInput.setText(accountInput.getText());
+            String signupFailure = "用户名或密码错误";
+            Toast.makeText(getApplicationContext(), signupFailure, Toast.LENGTH_SHORT).show();
+        } else if (res.get(0).getResult().equals("success")) {
+            accountInput.setTextColor(Color.rgb(0, 0, 255));
+            accountInput.setText(accountInput.getText());
+
+            User user = res.get(0);
+            Bundle bund = new Bundle();
+            bund.putSerializable("user",user);
+            Intent accountActivity = new Intent(SignUpActivity.this, AccountActivity.class);
+            accountActivity.putExtra("userInfo",bund);
+
+            startActivity(accountActivity);
+
+
+        }
+    }
 
     public void userSigninReact (Message msg) {
         ArrayList<Result> res = (ArrayList<Result>)msg.obj;
@@ -260,18 +312,22 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     public void userSignupReact (Message msg) {
-        ArrayList<Result> res = (ArrayList<Result>)msg.obj;
-        if(res.get(0).getResult().equals("failure")) {
+        ArrayList<User> res = (ArrayList<User>)msg.obj;
+        //ArrayList<Result> res = (ArrayList<Result>)msg.obj;
+        if(res.get(0).getResult().equals("failure")) { //.getResult().equals("failure")) {
             accountInput.setTextColor(Color.rgb(255, 0, 255));
             accountInput.setText(accountInput.getText());
             String signupFailure = "用户名或密码错误";
             Toast.makeText(getApplicationContext(), signupFailure, Toast.LENGTH_SHORT).show();
         } else if (res.get(0).getResult().equals("success")) {
-            accountInput.setTextColor(Color.rgb(0, 255, 255));
+            accountInput.setTextColor(Color.rgb(0, 0, 255));
             accountInput.setText(accountInput.getText());
 
+            User user = res.get(0);
+
+
             Bundle bund = new Bundle();
-            //bund.putSerializable();
+            bund.putSerializable("user",user);
             Intent accountActivity = new Intent(SignUpActivity.this, AccountActivity.class);
             accountActivity.putExtra("userInfo",bund);
 

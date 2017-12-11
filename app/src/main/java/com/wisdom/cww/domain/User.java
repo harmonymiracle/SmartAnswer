@@ -3,7 +3,6 @@ package com.wisdom.cww.domain;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -18,43 +17,144 @@ import static com.wisdom.cww.activities.MainActivity.JSON;
  */
 
 public class User implements Serializable{
+    public String getResult() {
+        return result;
+    }
+
+    public void setResult(String result) {
+        this.result = result;
+    }
+
+    String result;
+    String userId;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
     String username;
     String password;
-    int userid;
-
-    String nickname;
-    ArrayList<Question> questions;         //发布的问题
-    ArrayList<Answer>   answers;           //发布的答案
-
-    //  ArrayList<Eassy>   eassies;  创作    //创作的文章
-    ArrayList<Question> questionsCollected;//收藏的问题
-    ArrayList<Question> questionsFollowed; //关注的问题
-    ArrayList<User>     usersFollowed;     //关注的人
-    ArrayList<User>     fans;              //粉丝
-    //  ArrayList<Question> questionsUpvoted;//赞同的答案
-    ArrayList<Answer>   answersUpvoted;    //赞同的回
 
 
-    public void                setUsername(String username) {this.username=username;}
-    public void                setPassword(String password) {this.password=password;}
-    public void                setNickname(String nickname) {this.nickname=nickname;}
-    public int              getUserid()                  {return userid;}
-    public String              getUsername()                {return username;}
-    public String              getPassword()                {return password;}
-    public String              getNickname()                {return nickname;}
-    public ArrayList<Question> getQuestions()               {return questions;}
-    public ArrayList<Answer>   getAnswers()                 {return answers;}
-    public ArrayList<Question> getQuestionsCollected()      {return questionsCollected;}
-    public ArrayList<Question> getQuestionsFollowed()       {return questionsFollowed;}
-    public ArrayList<User>     getUsersFollowed()           {return usersFollowed;}
-    public ArrayList<User>     getFans()                    {return fans;}
-    //  public ArrayList<Question> getQuestionsUpvoted()        {return questionsUpvoted;}
-    public ArrayList<Answer>   getAnswersUpvoted()          {return answersUpvoted;}
+               //粉丝
+    String   nickname;
+    String   articleIds;
+    String   questionCollectedIds;//收藏的问题
+    String   questionFollowedIds; //关注的问题
+    String   fansIds;              //粉丝
+    String   usersFollowedIds;     //关注的人
+    String   questionPublishedIds;         //发布的问题
+    String   answerPublishedIds;           //发布的答案
+    String   commentPublishedIds;
+    String   answersUpvotedIds;    //赞同的回
+
+
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getArticleIds() {
+        return articleIds;
+    }
+
+    public void setArticleIds(String articleIds) {
+        this.articleIds = articleIds;
+    }
+
+    public String getQuestionCollectedIds() {
+        return questionCollectedIds;
+    }
+
+    public void setQuestionCollectedIds(String questionCollectedIds) {
+        this.questionCollectedIds = questionCollectedIds;
+    }
+
+    public String getQuestionFollowedIds() {
+        return questionFollowedIds;
+    }
+
+    public void setQuestionFollowedIds(String questionFollowedIds) {
+        this.questionFollowedIds = questionFollowedIds;
+    }
+
+    public String getFansIds() {
+        return fansIds;
+    }
+
+    public void setFansIds(String fansIds) {
+        this.fansIds = fansIds;
+    }
+
+    public String getUsersFollowedIds() {
+        return usersFollowedIds;
+    }
+
+    public void setUsersFollowedIds(String usersFollowedIds) {
+        this.usersFollowedIds = usersFollowedIds;
+    }
+
+    public String getQuestionPublishedIds() {
+        return questionPublishedIds;
+    }
+
+    public void setQuestionPublishedIds(String questionPublishedIds) {
+        this.questionPublishedIds = questionPublishedIds;
+    }
+
+    public String getAnswerPublishedIds() {
+        return answerPublishedIds;
+    }
+
+    public void setAnswerPublishedIds(String answerPublishedIds) {
+        this.answerPublishedIds = answerPublishedIds;
+    }
+
+    public String getCommentPublishedIds() {
+        return commentPublishedIds;
+    }
+
+    public void setCommentPublishedIds(String commentPublishedIds) {
+        this.commentPublishedIds = commentPublishedIds;
+    }
+
+    public String getAnswersUpvotedIds() {
+        return answersUpvotedIds;
+    }
+
+    public void setAnswersUpvotedIds(String answersUpvotedIds) {
+        this.answersUpvotedIds = answersUpvotedIds;
+    }
+
 
     public void addQuestion(String question,Callback back,String url)                    //提问
     {
         OkHttpClient client = new OkHttpClient();
-        AddQuestion addQuestion=new AddQuestion(userid,question);
+        AddQuestion addQuestion=new AddQuestion(userId,question);
 
         Gson gson=new Gson();
         String json=gson.toJson(addQuestion);
@@ -65,21 +165,21 @@ public class User implements Serializable{
     }
     private class AddQuestion
     {
-        private int userid;
-        private String questionId;
-        private String typeId;
-        public void setUserid(int userid){this.userid=userid;}
-        public void setQuestionId(String questionId){this.questionId=questionId;}
-        AddQuestion(int userid,String question)
+        private String userId;
+        private String question;
+        private String typeId = "4";
+        public void setUserid(String userId){this.userId=userId;}
+        public void setQuestion(String question){this.question=question;}
+        public AddQuestion(String userId,String question)
         {
-            setQuestionId(question);
-            setUserid(userid);
+            setQuestion(question);
+            setUserid(userId);
         }
     }
-    public void addAnswer(String answer,Callback back,String url)      //回答
+    public void addAnswer(String answer,String questionid,Callback back,String url)      //回答
     {
         OkHttpClient client = new OkHttpClient();
-        AddAnswer addAnswer=new AddAnswer(userid,answer);
+        AddAnswer addAnswer=new AddAnswer(userId,answer, questionid);
 
         Gson gson=new Gson();
         String json=gson.toJson(addAnswer);
@@ -90,22 +190,42 @@ public class User implements Serializable{
     }
     private class AddAnswer
     {
-        private int userId;
+        public String getUserId() {
+            return userId;
+        }
+
+        public String getAnswer() {
+            return answer;
+        }
+
+        private String userId;
+        private String questionId;
         private String answer;
-        private String typeId;
-        public void setUserId(int userId){this.userId=userId;}
+        private String typeId="5";
+
+        public String getQuestionId() {
+            return questionId;
+        }
+
+        public void setQuestionId(String questionId) {
+            this.questionId = questionId;
+        }
+
+
+        public void setUserId(String userId){this.userId=userId;}
         public void setAnswer(String answer){this.answer=answer;}
-        AddAnswer(int userId,String answer)
+        public AddAnswer(String userId,String answer,String questionId)
         {
             setAnswer(answer);
             setUserId(userId);
+            setQuestionId(questionId);
         }
 
     }
-    public void followUser(int userid2,String url,Callback back)                      //关注人
+    public void followUser(String userid2,String url,Callback back)                      //关注人
     {
         OkHttpClient client = new OkHttpClient();
-        FollowUser followUser=new FollowUser(userid,userid2);
+        FollowUser followUser=new FollowUser(userId,userid2);
 
         Gson gson=new Gson();
         String json=gson.toJson(followUser);
@@ -116,12 +236,12 @@ public class User implements Serializable{
     }
     private class FollowUser
     {
-        private int userId;
-        private int userid2;
+        private String userId;
+        private String userid2;
         private String typeId;
-        public void setUserId(int userId){this.userId=userId;}
-        public void setUserid2(int userid2){this.userid2=userid2;}
-        FollowUser(int userId,int userid2)
+        public void setUserId(String userId){this.userId=userId;}
+        public void setUserid2(String userid2){this.userid2=userid2;}
+        FollowUser(String userId,String userid2)
         {
             setUserId(userId);
             setUserid2(userid2);
@@ -130,7 +250,7 @@ public class User implements Serializable{
     public void followQuestion(String questionId,String url,Callback back)               //关注问题
     {
         OkHttpClient client = new OkHttpClient();
-        FollowQuestion followQuestion=new FollowQuestion(userid,questionId);
+        FollowQuestion followQuestion=new FollowQuestion(userId,questionId);
         Gson gson=new Gson();
         String json=gson.toJson(followQuestion);
         RequestBody requestBody = RequestBody.create(JSON, json);
@@ -140,12 +260,12 @@ public class User implements Serializable{
     }
     private class FollowQuestion
     {
-        private int userId;
+        private String userId;
         private String questionId;
         private String typeId;
-        public void setUserId(int userId){this.userId=userId;}
+        public void setUserId(String userId){this.userId=userId;}
         public void setQuestionId(String questionId){this.questionId=questionId;}
-        FollowQuestion(int userId,String questionId)
+        FollowQuestion(String userId,String questionId)
         {
             setQuestionId(questionId);
             setUserId(userId);
@@ -154,7 +274,7 @@ public class User implements Serializable{
     public void upvoteAnswer(String answerId,String url,Callback back)                   //点赞答案
     {
         OkHttpClient client = new OkHttpClient();
-        Upvote upvote=new Upvote(userid,answerId);
+        Upvote upvote=new Upvote(userId,answerId);
         Gson gson=new Gson();
         String json=gson.toJson(upvote);
         RequestBody requestBody = RequestBody.create(JSON, json);
@@ -164,12 +284,12 @@ public class User implements Serializable{
     }
     private class Upvote
     {
-        private int userId;
+        private String userId;
         private String answerId;
         private String typeId;
-        public void setUserId(int userId){this.userId=userId;}
+        public void setUserId(String userId){this.userId=userId;}
         public void setAnswerId(String answerId){this.answerId=answerId;}
-        Upvote(int userId,String answerId)
+        Upvote(String userId,String answerId)
         {
             setUserId(userId);
             setAnswerId(answerId);
@@ -179,7 +299,7 @@ public class User implements Serializable{
     public void collectQuestion(String questionId,String url,Callback back)              //收藏问题
     {
         OkHttpClient client = new OkHttpClient();
-        CollectionQuestion collectionQuestion=new CollectionQuestion(userid,questionId);
+        CollectionQuestion collectionQuestion=new CollectionQuestion(userId,questionId);
         Gson gson=new Gson();
         String json=gson.toJson(collectionQuestion);
         RequestBody requestBody = RequestBody.create(JSON, json);
@@ -189,12 +309,12 @@ public class User implements Serializable{
     }
     private class CollectionQuestion
     {
-        private int userId;
+        private String userId;
         private String questionId;
         private String typeId;
-        public void setUserId(int userId){this.userId=userId;}
+        public void setUserId(String userId){this.userId=userId;}
         public void setQuestionId(String questionId){this.questionId=questionId;}
-        CollectionQuestion(int userId,String questionId)
+        CollectionQuestion(String userId,String questionId)
         {
             setQuestionId(questionId);
             setUserId(userId);

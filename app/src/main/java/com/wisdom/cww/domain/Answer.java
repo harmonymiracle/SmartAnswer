@@ -1,10 +1,12 @@
 package com.wisdom.cww.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by Mr.Wang on 2017/12/3.
  */
 
-public class Answer {
+public class Answer implements Serializable {
     String answerId;
     String answer;
     String date;

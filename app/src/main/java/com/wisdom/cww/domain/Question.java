@@ -1,15 +1,18 @@
 package com.wisdom.cww.domain;
 
+import java.io.Serializable;
+
 /**
  * Created by Mr.Wang on 2017/12/3.
  */
 
-public class Question {
+public class Question implements Serializable {
     String questionId;
     String question;
     String date;
     String userId;
     String answerIds;
+
 
     public void setQuestionId(String questionId) {
         this.questionId = questionId;

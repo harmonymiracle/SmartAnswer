@@ -2,7 +2,7 @@
     <string name="app_name">智能问答demo1</string>
 
 
-    <string name="no_log_in">尚未注册</string>
+    <string name="no_log_in">未登录</string>
     <string name="my_follow_question">我关注的问题</string>
     <string name="my_follow_answer">我关注的答案</string>
 
@@ -14,11 +14,14 @@
 
     <string name="sign_up_title">注册页面</string>
 
-    <string name="idea_title">问一下</string>
+    <string name="idea_title">求助一下</string>
     <string name="write_idea_title">写下想法</string>
+    <string name="answer_title">问题相关</string>
 
     <string name="title_activity_account">AccountActivity</string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="title_activity_idea">IdeaActivity</string>
     <string name="title_activity_write_idea">WriteIdeaActivity</string>
+    <string name="title_activity_reply">ReplyActivity</string>
+    <string name="title_activity_answer">AnswerActivity</string>
 </resources>

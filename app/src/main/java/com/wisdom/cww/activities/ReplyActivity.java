@@ -30,7 +30,8 @@ import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
-public class WriteIdeaActivity extends AppCompatActivity {
+public class ReplyActivity extends AppCompatActivity {
+
 
     private String serverUrl = "http://39.106.114.141";
     public String userid;
@@ -42,10 +43,10 @@ public class WriteIdeaActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_write_idea);
+        setContentView(R.layout.activity_reply);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-        toolbar.setTitle(R.string.write_idea_title);
+        //toolbar.setTitle(R.string.write_idea_title);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         toolbar.setNavigationIcon(R.mipmap.ic_arrow_back_black_24dp);
@@ -56,15 +57,14 @@ public class WriteIdeaActivity extends AppCompatActivity {
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
                             case R.id.action_publish:
-                                String ques = ideaText.getText().toString();
+                                String ans = ideaText.getText().toString();
                                 User user = new User();
                                 user.setUsername(username);
                                 user.setUserId(userid);
-                                if(!ques.equals("")){
-                                    user.addQuestion(ques, boolback,serverUrl );
+                                if(!ans.equals("")){
+                                    String questionId = (String)getIntent().getBundleExtra("userInfo").getSerializable("questionId");
+                                    user.addAnswer(ans,questionId,boolback,serverUrl);
                                 }
-
-
                                 break;
                         }
                         return true;
@@ -83,7 +83,6 @@ public class WriteIdeaActivity extends AppCompatActivity {
             User user = (User) bund.getSerializable("user");
             userid = user.getUserId();
             username = user.getUsername();
-
         }
 
 
@@ -111,13 +110,14 @@ public class WriteIdeaActivity extends AppCompatActivity {
 
         if (msg != null) {
             ArrayList<Question> queslist = (ArrayList<Question>)msg.obj;
-            Intent ideaIntent = new Intent(WriteIdeaActivity.this, IdeaActivity.class);
+            Intent ideaIntent = new Intent(ReplyActivity.this, IdeaActivity.class);
             Bundle bund = new Bundle();
             bund.putSerializable("queslist",queslist);
             User user = new User();
             user.setUsername(username);
             user.setUserId(userid);
             bund.putSerializable("user",user);
+
             ideaIntent.putExtra("userInfo",bund);
             startActivity(ideaIntent);
         }
@@ -129,10 +129,10 @@ public class WriteIdeaActivity extends AppCompatActivity {
         ArrayList<Result> res = (ArrayList<Result>)msg.obj;
         if(res.get(0).getResult().equals("failure")) {
 
-            String publishFailure = "问题发布失败，检查网络连接";
+            String publishFailure = "答案发布失败，检查网络连接";
             Toast.makeText(getApplicationContext(), publishFailure, Toast.LENGTH_SHORT).show();
         } else if (res.get(0).getResult().equals("success")) {
-            String publishSuccess = "新问题已发布";
+            String publishSuccess = "答案已发布";
             Toast.makeText(getApplicationContext(), publishSuccess, Toast.LENGTH_SHORT).show();
 
             Request request = new Request();
@@ -140,6 +140,16 @@ public class WriteIdeaActivity extends AppCompatActivity {
 
         }
 
+        /*if (!ideaText.getText().toString().equals("")){
+            String publishSuccess = "新问题已发布";
+            Toast.makeText(getApplicationContext(), publishSuccess, Toast.LENGTH_SHORT).show();
+
+            Intent ideaIntent = new Intent(WriteIdeaActivity.this, IdeaActivity.class);
+            Bundle bund = new Bundle();
+            //bund.putSerializable();
+            ideaIntent.putExtra("userInfo",bund);
+            startActivity(ideaIntent);
+        }*/
     }
 
 
@@ -211,8 +221,9 @@ public class WriteIdeaActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu){
-        getMenuInflater().inflate(R.menu.menu_write_idea,menu);
+        getMenuInflater().inflate(R.menu.menu_reply,menu);
         return true;
     }
+
 
 }

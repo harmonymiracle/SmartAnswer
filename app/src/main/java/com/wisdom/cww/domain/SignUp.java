@@ -31,20 +31,21 @@ public class SignUp implements Serializable{
 
 
     public  void sendusername(String url,Callback back){
-        //向服务器发送用户问题
-        setTypeId("7");
-        send(url,back);
-    }
-    public  void Login(String url,Callback back){
-        //向服务器发送用户问题
+        //验证用户名合法性
         setTypeId("8");
         send(url,back);
     }
+    public  void Login(String url,Callback back){
+        //注册
+        setTypeId("7");
+        send(url,back);
+    }
     public  void signup(String url,Callback back){
-        //向服务器发送用户问题
+        //登录功能
         setTypeId("9");
         send(url,back);
     }
+
     private void  send(String url,Callback back)
     {
         Gson gson=new Gson();
