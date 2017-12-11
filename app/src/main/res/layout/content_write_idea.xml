@@ -9,4 +9,17 @@
     tools:context="com.wisdom.cww.activities.WriteIdeaActivity"
     tools:showIn="@layout/activity_write_idea">
 
+    <EditText
+        android:id="@+id/ideaText"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 </android.support.constraint.ConstraintLayout>

@@ -4,7 +4,7 @@
     tools:context=".IdeaActivity">
 
     <item android:id="@+id/action_publish"
-          android:title="Publish"
+          android:title="发布"
 
           android:icon="@mipmap/ic_check_black_24dp"
           />

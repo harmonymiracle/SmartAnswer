@@ -40,7 +40,7 @@ public class AccountActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Init();
+
 
 
 
@@ -89,11 +89,22 @@ public class AccountActivity extends AppCompatActivity {
                             startActivityForResult(SignIntent,forSign);
                         }
                         else {
-                            nickName.setText("haslogin");
+                            nickName.setText(userName);
                         }
                     }
                 }
         );
+
+
+        Init();
+        Intent data = getIntent();
+        Bundle bund = data.getBundleExtra("userInfo");
+        if (bund != null) {
+            User userInfo = (User) bund.getSerializable("user");
+            userName = userInfo.getUsername();
+            RefreshState();
+        }
+
 
     }
 

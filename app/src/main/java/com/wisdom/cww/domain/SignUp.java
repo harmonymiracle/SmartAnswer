@@ -5,6 +5,8 @@ package com.wisdom.cww.domain;
  */
 import com.google.gson.Gson;
 
+import java.io.Serializable;
+
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.OkHttpClient;
@@ -17,14 +19,14 @@ import static com.wisdom.cww.activities.MainActivity.JSON;
  * Created by cheng on 2017/12/5.
  */
 
-public class SignUp {
+public class SignUp implements Serializable{
     private OkHttpClient client = new OkHttpClient();
     private signup s = new signup();
     public void setTypeId(String typeId) { s.typeId=typeId; }
-    public void setUsername(String username){ s.user=username; }
+    public void setUsername(String username){ s.username=username; }
     public void setPassword(String password){ s.password=password; }
     public String getTypeId(){return s.typeId; }
-    public String getUsername(){ return s.user; }
+    public String getUsername(){ return s.username; }
     public String getPassword() { return s.password; }
 
 
@@ -59,7 +61,7 @@ public class SignUp {
     private class signup
     {
         String typeId;
-        String user;
+        String username;
         String password;
     }
 }

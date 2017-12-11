@@ -20,7 +20,7 @@ import static com.wisdom.cww.activities.MainActivity.JSON;
 public class User implements Serializable{
     String username;
     String password;
-    String userid;
+    int userid;
 
     String nickname;
     ArrayList<Question> questions;         //发布的问题
@@ -38,7 +38,7 @@ public class User implements Serializable{
     public void                setUsername(String username) {this.username=username;}
     public void                setPassword(String password) {this.password=password;}
     public void                setNickname(String nickname) {this.nickname=nickname;}
-    public String              getUserid()                  {return userid;}
+    public int              getUserid()                  {return userid;}
     public String              getUsername()                {return username;}
     public String              getPassword()                {return password;}
     public String              getNickname()                {return nickname;}
@@ -65,12 +65,12 @@ public class User implements Serializable{
     }
     private class AddQuestion
     {
-        private String userid;
+        private int userid;
         private String questionId;
         private String typeId;
-        public void setUserid(String userid){this.userid=userid;}
+        public void setUserid(int userid){this.userid=userid;}
         public void setQuestionId(String questionId){this.questionId=questionId;}
-        AddQuestion(String userid,String question)
+        AddQuestion(int userid,String question)
         {
             setQuestionId(question);
             setUserid(userid);
@@ -90,19 +90,19 @@ public class User implements Serializable{
     }
     private class AddAnswer
     {
-        private String userId;
+        private int userId;
         private String answer;
         private String typeId;
-        public void setUserId(String userId){this.userId=userId;}
+        public void setUserId(int userId){this.userId=userId;}
         public void setAnswer(String answer){this.answer=answer;}
-        AddAnswer(String userId,String answer)
+        AddAnswer(int userId,String answer)
         {
             setAnswer(answer);
             setUserId(userId);
         }
 
     }
-    public void followUser(String userid2,String url,Callback back)                      //关注人
+    public void followUser(int userid2,String url,Callback back)                      //关注人
     {
         OkHttpClient client = new OkHttpClient();
         FollowUser followUser=new FollowUser(userid,userid2);
@@ -116,12 +116,12 @@ public class User implements Serializable{
     }
     private class FollowUser
     {
-        private String userId;
-        private String userid2;
+        private int userId;
+        private int userid2;
         private String typeId;
-        public void setUserId(String userId){this.userId=userId;}
-        public void setUserid2(String userid2){this.userid2=userid2;}
-        FollowUser(String userId,String userid2)
+        public void setUserId(int userId){this.userId=userId;}
+        public void setUserid2(int userid2){this.userid2=userid2;}
+        FollowUser(int userId,int userid2)
         {
             setUserId(userId);
             setUserid2(userid2);
@@ -140,12 +140,12 @@ public class User implements Serializable{
     }
     private class FollowQuestion
     {
-        private String userId;
+        private int userId;
         private String questionId;
         private String typeId;
-        public void setUserId(String userId){this.userId=userId;}
+        public void setUserId(int userId){this.userId=userId;}
         public void setQuestionId(String questionId){this.questionId=questionId;}
-        FollowQuestion(String userId,String questionId)
+        FollowQuestion(int userId,String questionId)
         {
             setQuestionId(questionId);
             setUserId(userId);
@@ -164,12 +164,12 @@ public class User implements Serializable{
     }
     private class Upvote
     {
-        private String userId;
+        private int userId;
         private String answerId;
         private String typeId;
-        public void setUserId(String userId){this.userId=userId;}
+        public void setUserId(int userId){this.userId=userId;}
         public void setAnswerId(String answerId){this.answerId=answerId;}
-        Upvote(String userId,String answerId)
+        Upvote(int userId,String answerId)
         {
             setUserId(userId);
             setAnswerId(answerId);
@@ -189,12 +189,12 @@ public class User implements Serializable{
     }
     private class CollectionQuestion
     {
-        private String userId;
+        private int userId;
         private String questionId;
         private String typeId;
-        public void setUserId(String userId){this.userId=userId;}
+        public void setUserId(int userId){this.userId=userId;}
         public void setQuestionId(String questionId){this.questionId=questionId;}
-        CollectionQuestion(String userId,String questionId)
+        CollectionQuestion(int userId,String questionId)
         {
             setQuestionId(questionId);
             setUserId(userId);

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -18,11 +19,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
-import com.wisdom.cww.domain.Answer;
-import com.wisdom.cww.domain.Comment;
-import com.wisdom.cww.domain.Question;
+import com.wisdom.cww.domain.Result;
 import com.wisdom.cww.domain.SignUp;
-import com.wisdom.cww.domain.User;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,7 +40,7 @@ public class SignUpActivity extends AppCompatActivity {
     public Button signInBtn;
 
 
-    public ArrayList<String>  stringArrayList = new ArrayList<String>();
+    public ArrayList<Result>  resultsArrayList = new ArrayList<Result>();
 
 
     @Override
@@ -66,16 +64,33 @@ public class SignUpActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick (View view) {
-                        User user = new User();
                         SignUp signup = new SignUp();
-
-                        //AccountInfo acInfo = new AccountInfo();
                         String temp = accountInput.getText().toString();
                         if (temp != ""){
                             signup.setUsername(temp);
                             signup.sendusername(serverUrl,boolback);
                             //user.setNickname (temp);
                         }
+
+                    }
+                }
+        );
+
+        signInBtn = (Button) findViewById(R.id.signInBtn);
+        signInBtn.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick (View view) {
+                        SignUp signup = new SignUp();
+
+                        String tempUser = accountInput.getText().toString();
+                        String tempPwd = pwdInput.getText().toString();
+                        if (!tempUser.equals("") && !tempPwd.equals("")){
+                            signup.setUsername(tempUser);
+                            signup.setPassword(tempPwd);
+                            signup.Login(serverUrl,boolSigninBack);
+                        }
+
 
                     }
                 }
@@ -88,7 +103,18 @@ public class SignUpActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick (View view) {
-                        User user = new User();
+                        SignUp signup = new SignUp();
+
+                        String tempUser = accountInput.getText().toString();
+                        String tempPwd = pwdInput.getText().toString();
+                        if (!tempUser.equals("") && !tempPwd.equals("")){
+                            signup.setUsername(tempUser);
+                            signup.setPassword(tempPwd);
+                            signup.signup(serverUrl,boolSignupBack);
+                        }
+
+
+                        /*User user = new User();
                         //AccountInfo acInfo = new AccountInfo();
                         String tempUser = accountInput.getText().toString();
                         String tempPwd = pwdInput.getText().toString();
@@ -101,29 +127,13 @@ public class SignUpActivity extends AppCompatActivity {
                         Intent intent = new Intent(SignUpActivity.this, AccountActivity.class);
                         intent.putExtra("user",bunde);
                         setResult(RESULT_OK,intent);
-                        finish();
+                        finish();*/
 
                     }
                 }
         );
 
-        signInBtn = (Button) findViewById(R.id.signInBtn);
-        signInBtn.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick (View view) {
-                        User user = new User();
-                        //AccountInfo acInfo = new AccountInfo();
-                        String tempUser = accountInput.getText().toString();
-                        String tempPwd = pwdInput.getText().toString();
-                        if (tempUser != ""){
-                            user.setUsername(tempUser);
-                            user.setPassword(tempPwd);
-                        }
 
-                    }
-                }
-        );
 
 
 
@@ -132,19 +142,14 @@ public class SignUpActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
-                case 0:
-                    ArrayList<Question> Q=(ArrayList<Question>) msg.obj;
-
-                    break;
-                case 1:
-                    ArrayList<Answer> A=(ArrayList<Answer>)msg.obj;
-
-                    break;
-                case 2:
-                    ArrayList<Comment> C=(ArrayList<Comment>)msg.obj;
-                    break;
                 case 3:
                     userInputReact(msg);
+                    break;
+                case 4:
+                    userSigninReact(msg);
+                    break;
+                case 5:
+                    userSignupReact(msg);
                     break;
             }
         }
@@ -154,38 +159,143 @@ public class SignUpActivity extends AppCompatActivity {
         @Override
         public void onFailure(Call call, IOException e) {
             Log.i("MainActivity","onFailure");
-            stringArrayList.clear();
+            resultsArrayList.clear();
             e.printStackTrace();
         }
         @Override
         public void onResponse(Call call, Response response) throws IOException {
             Gson gson=new Gson();
-            stringArrayList.clear();
+            resultsArrayList.clear();
             String jsonData = response.body().string();
             JsonObject jsonObject = new JsonParser().parse(jsonData).getAsJsonObject();
             JsonArray jsonArray=jsonObject.getAsJsonArray("information");
 
             //            String m=new String();
-            for(JsonElement string :jsonArray)
+            for(JsonElement result:jsonArray)
             {
-                String  s=gson.fromJson(string,new TypeToken<String>() {}.getType());
-                stringArrayList.add(s);
+                Result result1=gson.fromJson(result,new TypeToken<Result>() {}.getType());
+                resultsArrayList.add(result1);
                 //                m=m+" "+question1.toString();
             }
 
             Message message=handler.obtainMessage();
-            message.obj=stringArrayList;
+            message.obj=resultsArrayList;
             message.what=3;
             message.sendToTarget();
         }
     };
 
-    public void userInputReact (Message msg) {
-        if (msg.obj.toString().equals("failure")){
-            accountInput.setTextColor(Color.rgb(255, 0, 0));
-        } else if (msg.obj.toString().equals("success")) {
-            accountInput.setTextColor(Color.rgb(0, 255, 0));
+    private Callback boolSigninBack = new Callback() {
+        @Override
+        public void onFailure(Call call, IOException e) {
+            Log.i("MainActivity","onFailure");
+            resultsArrayList.clear();
+            e.printStackTrace();
         }
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+            Gson gson=new Gson();
+            resultsArrayList.clear();
+            String jsonData = response.body().string();
+            JsonObject jsonObject = new JsonParser().parse(jsonData).getAsJsonObject();
+            JsonArray jsonArray=jsonObject.getAsJsonArray("information");
+
+            //            String m=new String();
+            for(JsonElement result:jsonArray)
+            {
+                Result result1=gson.fromJson(result,new TypeToken<Result>() {}.getType());
+                resultsArrayList.add(result1);
+                //                m=m+" "+question1.toString();
+            }
+
+            Message message=handler.obtainMessage();
+            message.obj=resultsArrayList;
+            message.what=4;
+            message.sendToTarget();
+        }
+    };
+
+    private Callback boolSignupBack = new Callback() {
+        @Override
+        public void onFailure(Call call, IOException e) {
+            Log.i("MainActivity","onFailure");
+            resultsArrayList.clear();
+            e.printStackTrace();
+        }
+        @Override
+        public void onResponse(Call call, Response response) throws IOException {
+            Gson gson=new Gson();
+            resultsArrayList.clear();
+            String jsonData = response.body().string();
+            JsonObject jsonObject = new JsonParser().parse(jsonData).getAsJsonObject();
+            JsonArray jsonArray=jsonObject.getAsJsonArray("information");
+
+            //            String m=new String();
+            for(JsonElement result:jsonArray)
+            {
+                Result result1=gson.fromJson(result,new TypeToken<Result>() {}.getType());
+                resultsArrayList.add(result1);
+                //                m=m+" "+question1.toString();
+            }
+
+            Message message=handler.obtainMessage();
+            message.obj=resultsArrayList;
+            message.what=5;
+            message.sendToTarget();
+        }
+    };
+
+
+    public void userSigninReact (Message msg) {
+        ArrayList<Result> res = (ArrayList<Result>)msg.obj;
+        if(res.get(0).getResult().equals("failure")) {
+            accountInput.setTextColor(Color.rgb(255, 0, 0));
+            accountInput.setText(accountInput.getText());
+            String signinFailure = "账户已存在，不可重复注册";
+            Toast.makeText(getApplicationContext(), signinFailure, Toast.LENGTH_SHORT).show();
+        } else if (res.get(0).getResult().equals("success")) {
+            accountInput.setTextColor(Color.rgb(255, 255, 0));
+            accountInput.setText(accountInput.getText());
+        }
+    }
+
+    public void userSignupReact (Message msg) {
+        ArrayList<Result> res = (ArrayList<Result>)msg.obj;
+        if(res.get(0).getResult().equals("failure")) {
+            accountInput.setTextColor(Color.rgb(255, 0, 255));
+            accountInput.setText(accountInput.getText());
+            String signupFailure = "用户名或密码错误";
+            Toast.makeText(getApplicationContext(), signupFailure, Toast.LENGTH_SHORT).show();
+        } else if (res.get(0).getResult().equals("success")) {
+            accountInput.setTextColor(Color.rgb(0, 255, 255));
+            accountInput.setText(accountInput.getText());
+
+            Bundle bund = new Bundle();
+            //bund.putSerializable();
+            Intent accountActivity = new Intent(SignUpActivity.this, AccountActivity.class);
+            accountActivity.putExtra("userInfo",bund);
+
+            startActivity(accountActivity);
+
+
+        }
+    }
+
+
+
+    public void userInputReact (Message msg) {
+        ArrayList<Result> res = (ArrayList<Result>)msg.obj;
+        if(res.get(0).getResult().equals("failure")) {
+            accountInput.setTextColor(Color.rgb(255, 0, 0));
+            accountInput.setText(accountInput.getText());
+            String signcheckFailure = "账户名已存在";
+            Toast.makeText(getApplicationContext(), signcheckFailure, Toast.LENGTH_SHORT).show();
+        } else if (res.get(0).getResult().equals("success")) {
+            accountInput.setTextColor(Color.rgb(0, 255, 0));
+            accountInput.setText(accountInput.getText());
+        }
+
+
 
     }
 
